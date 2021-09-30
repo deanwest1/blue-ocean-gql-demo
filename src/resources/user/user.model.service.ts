@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { SignUpInput } from './dto/sign-up.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { hash } from 'bcrypt';
@@ -50,7 +54,7 @@ export class UserModelService {
   update({ id, ...updatedUserDetails }: UpdateUserInput) {
     const idx = this.findIndexById(id);
     if (idx === -1) {
-      throw new BadRequestException(
+      throw new NotFoundException(
         `Could not update user: No user found with id of ${id}`,
       );
     }

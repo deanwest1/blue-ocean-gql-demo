@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { UpdatePostInput } from './dto/update-post.input';
 
 @Injectable()
@@ -36,7 +40,7 @@ export class PostModelService {
   update({ id, body }: UpdatePostInput) {
     const idx = this.findIndexById(id);
     if (idx === -1) {
-      throw new BadRequestException(
+      throw new NotFoundException(
         `Could not update post: No post found with id of ${id}`,
       );
     }
@@ -51,7 +55,7 @@ export class PostModelService {
   remove(id: string) {
     const idx = this.findIndexById(id);
     if (idx === -1) {
-      throw new BadRequestException(
+      throw new NotFoundException(
         `Could not remove post: No post found with id of ${id}`,
       );
     }
