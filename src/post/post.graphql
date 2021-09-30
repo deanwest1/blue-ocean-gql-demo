@@ -12,7 +12,7 @@ input UpdatePostInput {
 
 type Query {
   allPosts: [Post]!
-  post(id: Int!): Post
+  post(id: ID!): Post
 }
 
 type Mutation {
