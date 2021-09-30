@@ -1,5 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { CreatePostInput } from './dto/create-post.input';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { UpdatePostInput } from './dto/update-post.input';
 
 @Injectable()
@@ -26,15 +25,36 @@ export class PostModelService {
     return PostModelService.posts;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} post`;
+  findById(id: string) {
+    return PostModelService.posts.find((post) => post.id === id);
   }
 
-  update(id: number, updatePostInput: UpdatePostInput) {
-    return `This action updates a #${id} post`;
+  findIndexById(id: string) {
+    return PostModelService.posts.findIndex((post) => post.id === id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  update({ id, body }: UpdatePostInput) {
+    const idx = this.findIndexById(id);
+    if (idx === -1) {
+      throw new BadRequestException(
+        `Could not update post: No post found with id of ${id}`,
+      );
+    }
+    PostModelService.posts[idx] = {
+      ...PostModelService.posts[idx],
+      updatedAt: new Date().toISOString(),
+      body,
+    };
+    return PostModelService.posts[idx];
+  }
+
+  remove(id: string) {
+    const idx = this.findIndexById(id);
+    if (idx === -1) {
+      throw new BadRequestException(
+        `Could not remove post: No post found with id of ${id}`,
+      );
+    }
+    return PostModelService.posts.splice(idx, 1)[0];
   }
 }

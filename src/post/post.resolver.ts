@@ -18,17 +18,17 @@ export class PostResolver {
   }
 
   @Query('post')
-  findOne(@Args('id') id: number) {
-    return this.postModelService.findOne(id);
+  findById(@Args('id') id: string) {
+    return this.postModelService.findById(id);
   }
 
   @Mutation('updatePost')
   update(@Args('updatePostInput') updatePostInput: UpdatePostInput) {
-    return this.postModelService.update(updatePostInput.id, updatePostInput);
+    return this.postModelService.update(updatePostInput);
   }
 
   @Mutation('removePost')
-  remove(@Args('id') id: number) {
+  remove(@Args('id') id: string) {
     return this.postModelService.remove(id);
   }
 }
