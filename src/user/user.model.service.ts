@@ -3,7 +3,7 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 
 @Injectable()
-export class UserService {
+export class UserModelService {
   create(createUserInput: CreateUserInput) {
     return 'This action adds a new user';
   }

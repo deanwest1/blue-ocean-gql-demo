@@ -1,24 +1,22 @@
 type Post {
-  # Example field (placeholder)
-  exampleField: Int
-}
-
-input CreatePostInput {
-  # Example field (placeholder)
-  exampleField: Int
+  id: ID!
+  body: String!
+  createdAt: String!
+  updatedAt: String!
 }
 
 input UpdatePostInput {
-  id: Int!
+  id: ID!
+  body: String!
 }
 
 type Query {
-  posts: [Post]!
+  allPosts: [Post]!
   post(id: Int!): Post
 }
 
 type Mutation {
-  createPost(createPostInput: CreatePostInput!): Post!
+  createPost(body: String!): Post!
   updatePost(updatePostInput: UpdatePostInput!): Post!
-  removePost(id: Int!): Post
+  removePost(id: ID!): Post
 }

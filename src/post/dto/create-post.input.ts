@@ -1,1 +1,3 @@
-export class CreatePostInput {}
+export class CreatePostInput {
+  body!: string;
+}
