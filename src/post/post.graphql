@@ -13,7 +13,7 @@ input UpdatePostInput {
 }
 
 type Query {
-  post: [Post]!
+  posts: [Post]!
   post(id: Int!): Post
 }
 
