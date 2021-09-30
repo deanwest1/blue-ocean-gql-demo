@@ -14,7 +14,8 @@ export class AuthController {
   @Post('login')
   async login(@Request() req) {
     // If this code was even reached, then the user successfully logged in.
-    // We can then sign and return a JWT accessToken to the user
-    return req.user;
+    // passport-local will save the user details to req.user, which we can
+    // use to sign a JWT accessToken that gets returned to the user
+    return this.authService.login(req.user);
   }
 }
