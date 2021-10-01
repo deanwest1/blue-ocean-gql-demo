@@ -29,12 +29,12 @@ export class AuthService {
   }
 
   // Validate that a given user is the author of a given post
-  async validateUserIsAuthor(email: string, postId: string) {
+  async validateUserIsAuthor(userId: string, postId: string) {
     const post = this.postModelService.findById(postId);
     if (!post) {
       throw new NotFoundException(`No post exists with ID ${postId}`);
     }
-    return post.authorEmail === email;
+    return post.authorId === userId;
   }
 
   // This method runs after passport-local strategy has already verified

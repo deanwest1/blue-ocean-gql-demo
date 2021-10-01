@@ -5,9 +5,18 @@ type User {
   email: String!
 }
 
+type LoginResponse {
+  accessToken: String
+}
+
 input SignUpInput {
   firstName: String!
   lastName: String
+  email: String!
+  password: String!
+}
+
+input LoginInput {
   email: String!
   password: String!
 }
@@ -25,5 +34,6 @@ type Query {
 
 type Mutation {
   signUp(signUpInput: SignUpInput!): User!
+  login(loginInput: LoginInput): LoginResponse!
   updateUser(updateUserInput: UpdateUserInput!): User!
 }

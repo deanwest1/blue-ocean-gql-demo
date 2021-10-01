@@ -32,8 +32,8 @@ export class PostResolver {
 
   @Mutation('updatePost')
   @UseGuards(GqlJwtAuthGuard, PostWriteAccessGuard)
-  update(@Args('updatePostInput') updatePostInput: UpdatePostInput) {
-    return this.postModelService.update(updatePostInput);
+  update(@Args('id') id: string, @Args('body') body: string) {
+    return this.postModelService.update({ id, body });
   }
 
   @Mutation('removePost')

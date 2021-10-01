@@ -5,11 +5,6 @@ type Post {
   updatedAt: String!
 }
 
-input UpdatePostInput {
-  id: ID!
-  body: String!
-}
-
 type Query {
   allPosts: [Post]!
   post(id: ID!): Post
@@ -17,6 +12,6 @@ type Query {
 
 type Mutation {
   createPost(body: String!): Post!
-  updatePost(updatePostInput: UpdatePostInput!): Post!
+  updatePost(id: ID!, body: String!): Post!
   removePost(id: ID!): Post
 }
