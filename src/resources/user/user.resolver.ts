@@ -1,13 +1,24 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Parent,
+  ResolveField,
+} from '@nestjs/graphql';
 import { UserModelService } from './user.model.service';
 import { SignUpInput } from './dto/sign-up.input';
 import { LogInInput } from './dto/log-in.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import axios from 'axios';
+import { PostModelService } from '../post/post.model.service';
 
 @Resolver('User')
 export class UserResolver {
-  constructor(private readonly userModelService: UserModelService) {}
+  constructor(
+    private readonly userModelService: UserModelService,
+    private readonly postModelService: PostModelService,
+  ) {}
 
   @Mutation('signUp')
   signUp(@Args('signUpInput') signUpInput: SignUpInput) {
@@ -35,6 +46,11 @@ export class UserResolver {
   @Query('user')
   findById(@Args('id') id: string) {
     return this.userModelService.findById(id);
+  }
+
+  @ResolveField()
+  posts(@Parent() user) {
+    return this.postModelService.findByAuthorId(user.id);
   }
 
   @Mutation('updateUser')

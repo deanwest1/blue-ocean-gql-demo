@@ -14,7 +14,7 @@ import { PostModule } from 'src/resources/post/post.module';
       secret: 'secret', // Of course this is bad and you should never do this. See README
       signOptions: { expiresIn: '30m' },
     }),
-    UserModule,
+    forwardRef(() => UserModule),
     forwardRef(() => PostModule),
     PassportModule,
   ],

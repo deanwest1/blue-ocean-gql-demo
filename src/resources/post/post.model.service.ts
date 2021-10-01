@@ -30,6 +30,10 @@ export class PostModelService {
     return PostModelService.posts;
   }
 
+  findByAuthorId(authorId: string) {
+    return PostModelService.posts.filter((post) => post.authorId === authorId);
+  }
+
   findById(id: string) {
     return PostModelService.posts.find((post) => post.id === id);
   }
