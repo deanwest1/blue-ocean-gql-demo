@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { UserModule } from '../resources/user/user.module';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { PostModule } from 'src/resources/post/post.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       signOptions: { expiresIn: '30m' },
     }),
     UserModule,
+    forwardRef(() => PostModule),
     PassportModule,
   ],
   controllers: [AuthController],

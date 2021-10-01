@@ -13,13 +13,14 @@ export class PostModelService {
   // disadvantages to this. See this repo's README for more details
   static posts = [];
 
-  create(body: string) {
+  create(body: string, authorId: string) {
     const createdAt = new Date().toISOString();
     const newPost = {
       body,
       id: Date.now().toString(),
       createdAt,
       updatedAt: createdAt,
+      authorId,
     };
     PostModelService.posts.push(newPost);
     return newPost;
