@@ -14,12 +14,12 @@ export class PostModelService {
   static posts = [];
 
   create(body: string, authorId: string) {
-    const createdAt = new Date().toISOString();
+    const now = new Date();
     const newPost = {
       body,
-      id: Date.now().toString(),
-      createdAt,
-      updatedAt: createdAt,
+      id: now.getTime().toString(),
+      createdAt: now.toISOString(),
+      updatedAt: now.toISOString(),
       authorId,
     };
     PostModelService.posts.push(newPost);

@@ -12,6 +12,9 @@ import { LogInInput } from './dto/log-in.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import axios from 'axios';
 import { PostModelService } from '../post/post.model.service';
+import { UseGuards } from '@nestjs/common';
+import { GqlJwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { UserWriteAccessGuard } from 'src/guards/user-write-access.guard';
 
 @Resolver('User')
 export class UserResolver {
@@ -56,7 +59,11 @@ export class UserResolver {
   }
 
   @Mutation('updateUser')
-  update(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.userModelService.update(updateUserInput);
+  @UseGuards(GqlJwtAuthGuard, UserWriteAccessGuard)
+  update(
+    @Args('id') id: string,
+    @Args('updateUserInput') updateUserInput: UpdateUserInput,
+  ) {
+    return this.userModelService.update(id, updateUserInput);
   }
 }

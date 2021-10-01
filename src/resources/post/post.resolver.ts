@@ -7,8 +7,6 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { PostModelService } from './post.model.service';
-import { CreatePostInput } from './dto/create-post.input';
-import { UpdatePostInput } from './dto/update-post.input';
 import { UseGuards } from '@nestjs/common';
 import { GqlJwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { PostWriteAccessGuard } from 'src/guards/post-write-access.guard';

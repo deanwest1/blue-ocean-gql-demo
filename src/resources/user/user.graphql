@@ -3,6 +3,8 @@ type User {
   firstName: String!
   lastName: String
   email: String!
+  bio: String
+  signUpDate: String!
   posts: [Post]
 }
 
@@ -23,9 +25,9 @@ input LoginInput {
 }
 
 input UpdateUserInput {
-  id: ID!
   firstName: String
   lastName: String
+  bio: String
 }
 
 type Query {
@@ -36,5 +38,5 @@ type Query {
 type Mutation {
   signUp(signUpInput: SignUpInput!): User!
   login(loginInput: LoginInput): LoginResponse!
-  updateUser(updateUserInput: UpdateUserInput!): User!
+  updateUser(id: ID!, updateUserInput: UpdateUserInput!): User!
 }

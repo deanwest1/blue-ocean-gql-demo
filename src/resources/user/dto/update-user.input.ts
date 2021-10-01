@@ -1,5 +1,5 @@
 export class UpdateUserInput {
-  id!: string;
   firstName: string;
   lastName: string;
+  bio: string;
 }

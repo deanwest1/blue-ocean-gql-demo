@@ -26,9 +26,11 @@ export class UserModelService {
     // Email address is available, so register the new user
     const { password, ...userDetails } = signUpInput;
     const hashedPassword = await hash(password, 10);
+    const now = new Date();
     const newUser = {
       ...userDetails,
-      id: Date.now().toString(),
+      id: now.getTime().toString(),
+      signUpDate: now.toISOString(),
       password: hashedPassword,
     };
     UserModelService.users.push(newUser);
@@ -51,7 +53,7 @@ export class UserModelService {
     return UserModelService.users.findIndex((post) => post.id === id);
   }
 
-  update({ id, ...updatedUserDetails }: UpdateUserInput) {
+  update(id: string, updateUserInput: UpdateUserInput) {
     const idx = this.findIndexById(id);
     if (idx === -1) {
       throw new NotFoundException(
@@ -60,7 +62,7 @@ export class UserModelService {
     }
     UserModelService.users[idx] = {
       ...UserModelService.users[idx],
-      ...updatedUserDetails,
+      ...updateUserInput,
     };
     return UserModelService.users[idx];
   }
