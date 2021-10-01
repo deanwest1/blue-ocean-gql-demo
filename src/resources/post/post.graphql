@@ -3,6 +3,7 @@ type Post {
   body: String!
   createdAt: String!
   updatedAt: String!
+  author: User!
 }
 
 type Query {

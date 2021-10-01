@@ -35,6 +35,7 @@ export class UserResolver {
       'http://localhost:3000/auth/login',
       loginInput,
     );
+    // @TODO: error handling for missing user email
     return loginResults;
   }
 
@@ -48,8 +49,9 @@ export class UserResolver {
     return this.userModelService.findById(id);
   }
 
-  @ResolveField()
-  posts(@Parent() user) {
+  @ResolveField('posts')
+  getUserPosts(@Parent() user) {
+    // We are not solving the GraphQL n+1 problem for now.
     return this.postModelService.findByAuthorId(user.id);
   }
 

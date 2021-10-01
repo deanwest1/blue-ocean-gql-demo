@@ -1,4 +1,11 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { PostModelService } from './post.model.service';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
@@ -6,10 +13,14 @@ import { UseGuards } from '@nestjs/common';
 import { GqlJwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { PostWriteAccessGuard } from 'src/guards/post-write-access.guard';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
+import { UserModelService } from '../user/user.model.service';
 
 @Resolver('Post')
 export class PostResolver {
-  constructor(private readonly postModelService: PostModelService) {}
+  constructor(
+    private readonly postModelService: PostModelService,
+    private readonly userModelService: UserModelService,
+  ) {}
 
   @Mutation('createPost')
   @UseGuards(GqlJwtAuthGuard)
@@ -28,6 +39,12 @@ export class PostResolver {
   @Query('post')
   findById(@Args('id') id: string) {
     return this.postModelService.findById(id);
+  }
+
+  @ResolveField('author')
+  getAuthorOfPost(@Parent() post) {
+    // We are not solving the GraphQL n+1 problem for now.
+    return this.userModelService.findById(post.authorId);
   }
 
   @Mutation('updatePost')
