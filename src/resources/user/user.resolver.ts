@@ -114,7 +114,9 @@ export class UserResolver {
   follow(@Args('email') userToFollowEmail: string, @CurrentUser() user: any) {
     const currentUserEmail = user.email;
     if (userToFollowEmail === currentUserEmail) {
-      throw new BadRequestException(`You can't follow yourself.`);
+      throw new BadRequestException(
+        `You can't follow yourself. Sorry about that!`,
+      );
     }
     return this.userModelService.followUser(
       userToFollowEmail,

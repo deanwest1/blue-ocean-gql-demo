@@ -38,7 +38,7 @@ export class PostModelService {
     return PostModelService.posts.findIndex((post) => post.id === id);
   }
 
-  update({ id, body }: UpdatePostInput) {
+  update(id: string, body: string) {
     const idx = this.findIndexById(id);
     if (idx === -1) {
       throw new NotFoundException(

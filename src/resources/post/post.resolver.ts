@@ -45,16 +45,16 @@ export class PostResolver {
   }
 
   @ResolveField('author')
-  getAuthorOfPost(@Parent() post) {
+  getAuthor(@Parent() post) {
     // We are not solving the GraphQL n+1 problem here.
-    // See the notes in the field resolvers for the user entity for more details.
+    // See the notes in the README and the field resolvers for the user entity for more details.
     return this.userModelService.findById(post.authorId);
   }
 
   @Mutation('updatePost')
   @UseGuards(GqlJwtAuthGuard, PostWriteAccessGuard)
   update(@Args('id') id: string, @Args('body') body: string) {
-    return this.postModelService.update({ id, body });
+    return this.postModelService.update(id, body);
   }
 
   @Mutation('removePost')
