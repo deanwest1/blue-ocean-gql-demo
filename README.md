@@ -1,6 +1,6 @@
 # blue-ocean-gql-demo
 
-A minimal Twitter-like GraphQL API written in Node. This demostration only includes a back-end. Rather than requests being made from a user interface, it's expected that the user will issue GraphQL queries and mutations directly using either [GraphiQL](https://graphql-dotnet.github.io/docs/getting-started/graphiql/) or [Postman](https://www.postman.com/).
+A minimal Twitter-like GraphQL API written in Node using the [NestJS](https://nestjs.com/) framework. This demostration only includes a back-end. Rather than requests being made from a user interface, it's expected that the user will issue GraphQL queries and mutations directly using either [GraphiQL](https://graphql-dotnet.github.io/docs/getting-started/graphiql/) or [Postman](https://www.postman.com/).
 
 ## Quick Start
 
