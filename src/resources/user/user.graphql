@@ -5,6 +5,8 @@ type User {
   email: String!
   bio: String
   signUpDate: String!
+  followers: [User]
+  following: [User]
   posts: [Post]
 }
 
@@ -39,4 +41,5 @@ type Mutation {
   signUp(signUpInput: SignUpInput!): User!
   login(loginInput: LoginInput): LoginResponse!
   updateUser(id: ID!, updateUserInput: UpdateUserInput!): User!
+  followUser(email: String!): User!
 }

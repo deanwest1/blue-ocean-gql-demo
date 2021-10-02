@@ -32,6 +32,8 @@ export class UserModelService {
       id: now.getTime().toString(),
       signUpDate: now.toISOString(),
       password: hashedPassword,
+      followers: [],
+      following: [],
     };
     UserModelService.users.push(newUser);
     return newUser;
@@ -65,5 +67,26 @@ export class UserModelService {
       ...updateUserInput,
     };
     return UserModelService.users[idx];
+  }
+
+  followUser(userToFollowEmail: string, currentUserEmail: string) {
+    const currentUser = this.findByEmail(currentUserEmail);
+    const userToFollow = this.findByEmail(userToFollowEmail);
+    if (!userToFollow) {
+      throw new NotFoundException(
+        `Could not follow user: No user found with email of ${userToFollowEmail}`,
+      );
+    }
+    const isAlreadyFollowing = currentUser.following.find(
+      (email) => email === userToFollowEmail,
+    );
+    if (isAlreadyFollowing) {
+      throw new BadRequestException(
+        `You're already following ${userToFollowEmail}`,
+      );
+    }
+    currentUser.following.push(userToFollowEmail);
+    userToFollow.followers.push(currentUserEmail);
+    return userToFollow;
   }
 }
