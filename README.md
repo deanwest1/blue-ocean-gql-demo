@@ -37,21 +37,21 @@ This API allows for the following operations:
 
 ## Limitations
 
-This API is for demonstration purposes and is far from a production-quality solution. This is not an exhaustive list of all the limitations (I could probably add a lot more). Here are some of the most notable limitations of this demo:
+This API is for demonstration purposes and is far from a production-quality solution. This is not necessarily an exhaustive list of all the limitations. Here are some of the most notable limitations of this demo:
 
 - There's no user interface! Kind of a big deal. An application's frontend is supposed to make interfacing with the back end effortless. There are some notable limitations you may notice:
   - Of course, you're writing queries and mutations yourself
   - You also have to manually set the `Authorization` header for protected routes.
   - There's a workaround for handling login requests through GraphQL. Since the `passport-local` strategy relies on examining a simple JSON payload in `request.body` for a login credentials, it's not feasible to use that Passport stategy from a resolver. Rather, it's much more straight-forward to implement login functionality from a simple REST endpoint. Rather than require you, the user to leave GraphiQL and issue a separate `curl` or Postman request to a REST endpoint to login, I've included a `login` GraphQL mutation that will act as a proxy for the actual login REST endpoint. If you indeed used a REST endpoint that lived separately from your GraphQL API to authenticate a user and issue an `accessToken`, if you had a frontend, this would be completely concealed from the end user.
 - There are no tests whatsoever, which is obviously not okay for a real application. I like to deliver solid, testable code that I can feel good and confident about because I like to sleep at night. I would never want to deliver a production application that has no tests.
-- There's no data persistence. Beyond just the annoyance of all your users and posts getting nuked every time you restart the server, a data store would likely change the way the application is written (becase **_ ), and it would likely improve performance (because _** )
+- There's no data persistence. Beyond just the annoyance of all your users and posts getting nuked every time you restart the server, a data store would likely change the way the application is written, and it would very likely improve performance due to a database's built-in optimizations, the ability to more easily batch queries together, database indexes, etc.
 - Since there's no data store, the main resources (users and posts) are plain old JavaScript arrays, and users and posts are stored in separate arrays because they need to be queried and mutated independent of each other.
   - Arrays are a logical construct for representing a collection of resources in GraphQL, but since the fetching and joining logic is implemented directly in JavaScript, as opposed to being handled by a data store, there are some performance implications:
-    - Finding a record will always have, at minimum, an O(n) time complexity because we're iterating over an entire array. There are no indexes to limit the scope of our search, and there is no hash table to allow for immediate lookups.
-    - Performing joins (for example, find a user and then get all of his/her posts) will always have an O(n^2) time complexity. For the example of getting all posts by a user, since there are no indexes or hash tables, we have to iterate over every single post to be sure we've included every post by that user.
+    - Finding a record in an array will always have, at minimum, an O(n) time complexity because we're iterating over an entire array. There are no indexes to limit the scope of our search, and there is no hash table to allow for immediate lookups.
+    - Performing joins (for example, find a user and then get all of his/her posts) will always have at least an O(n^2) time complexity. For the example of getting all posts by a user, since there are no indexes or hash tables, we have to iterate over every single post to be sure we've included every post by that user.
 - The JWT generated when a user successfully logs in is signed with the secret, `"secret"`, which is included directly in the source code. In a real application, this would be a much more secure secret, stored securely, say as a SecureString in AWS Param Store. It would never be exposed in source code.
-- There is no reading of configurations of any kind: not from env variables, secret vaults, or anywhere else. As a result, nothing is configurable! Not even the application's port number. Of course, in a real app, you'd make as much as feasible configurable, so that certain changes to your application could happen without having to deploy a code change.
-- We are not addressing the GraphQL n+1 problem in this demo. For certain fields, this represents significant complexity. There are details notes about this in the field resolvers for the user entity, but in general there's a ton of room for optimizations here in the form of batching operations (e.g. using DataLoader), using key/val storage where possible instead of arrays (Because key/val lookups are O(1) instead of O(n)), and utilizing database optimizations, both built-in and those achieved by having useful indexes.
+- There is no reading of configurations of any kind: not from env variables, secret vaults, or anywhere else. As a result, nothing is configurable! Not even the application's port number. Of course, in a real app, you'd make as much as feasible configurable, so that certain changes to your application could happen without having to deploy a code change. Nest makes this easy with the `ConfigModule` from `@nestjs/config`.
+- We are not addressing the GraphQL n+1 problem in this demo. For certain fields, this means significant time complexity. There are detailed notes about this in the field resolvers for the user entity, but in general there's a ton of room for optimizations here in the form of batching operations (e.g. using DataLoader), using key/val storage where possible instead of arrays (Because key/val lookups are O(1) instead of O(n)), and utilizing database optimizations, both built-in and those achieved by having useful indexes.
 - We are not explicitly addressing caching in this demo.
 - While we are using TypeScript, We're not always using it to its full potential: Ideally, all of your data: inputs, outputs and otherwise would have explicit type declarations to make your code not only more self-documenting, but to make it harder to screw something up. This, along with proper testing, goes a long way toward eliminating silly mistakes.
 
@@ -111,6 +111,8 @@ Authorization: Bearer <accessToken>
 If you're using the GraphiQL UI in the browser, you may wish to use a browser extension like [ModHeader](https://chrome.google.com/webstore/detail/modheader/idgpnmonknjnojddfkpgkljpfnnfcklj) to make it easy to modify the `Authorization` header.
 
 If you want to change users, you need to login as another user and change the `Authorization` token again.
+
+The following mutations require you to be logged in to perform:
 
 ### Create A Post
 
@@ -205,6 +207,8 @@ You can query users and posts in the following ways:
   - Get all posts
   - Get posts by a given user ID
   - Get an individual post by post ID
+
+Below are just two examples, one for getting all users and one for getting all posts:
 
 ### Get All Users Example
 
