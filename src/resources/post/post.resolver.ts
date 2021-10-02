@@ -34,6 +34,11 @@ export class PostResolver {
     return this.postModelService.findAll();
   }
 
+  @Query('postsByAuthor')
+  findByAuthor(@Args('id') id: string) {
+    return this.postModelService.findByAuthorId(id);
+  }
+
   @Query('post')
   findById(@Args('id') id: string) {
     return this.postModelService.findById(id);
