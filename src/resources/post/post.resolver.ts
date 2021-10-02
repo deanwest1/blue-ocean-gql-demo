@@ -41,7 +41,8 @@ export class PostResolver {
 
   @ResolveField('author')
   getAuthorOfPost(@Parent() post) {
-    // We are not solving the GraphQL n+1 problem for now.
+    // We are not solving the GraphQL n+1 problem here.
+    // See the notes in the field resolvers for the user entity for more details.
     return this.userModelService.findById(post.authorId);
   }
 

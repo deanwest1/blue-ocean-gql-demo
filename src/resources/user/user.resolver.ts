@@ -65,13 +65,28 @@ export class UserResolver {
 
   @ResolveField('posts')
   getPosts(@Parent() user) {
-    // We are not solving the GraphQL n+1 problem here
+    // We are not solving the GraphQL n+1 problem here. If you query allUsers,
+    // for x number of users, you will run the below function, which itself is O(n) time complexity
+    // because it needs to search the entire user array. In a real application,
+    // you would want to use a tool like DataLoader to batch these operations, so instead of saying,
+    // "For every single user in our system, we need to find all of their posts" O(n^2), we would say,
+    // "I want all the posts that belong to users in this list" (as a single call)
+    // Overall, the combination of using DataLoader, a key/val storage as opposed to arrays,
+    // database indexes and other built-in database optimizations would significantly increase performance here.
     return this.postModelService.findByAuthorId(user.id);
   }
 
   @ResolveField('followers')
   getFollowers(@Parent() user) {
-    // We are not solving the GraphQL n+1 problem here
+    // We are _really_ _really_ not solving the GraphQL n+1 problem here
+    // So if you query allUsers, for x number of users, we run findByEmail()
+    // y number of times (once for each follower), and each call to findByEmail()
+    // in and of itself is already O(n) time complexity because it has to search the entire array.
+    // In a real application, you'd want to batch these operations as much as possible.
+    // For example, instead of mapping through the user.followers array one at a time and calling
+    // findByEmail for each follower, you could batch this call to say,
+    // "I want all of the users who have an email address that's in this list", which could
+    // be achieved in a single function call, making the call below O(n) instead of O(n^2)
     return user.followers.map((email) =>
       this.userModelService.findByEmail(email),
     );
@@ -79,7 +94,7 @@ export class UserResolver {
 
   @ResolveField('following')
   getFollowing(@Parent() user) {
-    // We are not solving the GraphQL n+1 problem here
+    // See notes above about the n + 1 problem
     return user.following.map((email) =>
       this.userModelService.findByEmail(email),
     );
