@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UpdatePostInput } from './dto/update-post.input';
 
 @Injectable()
 export class PostModelService {

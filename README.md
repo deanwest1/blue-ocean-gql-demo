@@ -153,6 +153,24 @@ mutation updatePost($id: ID!, $body: String!) {
 }
 ```
 
+### Delete A Post
+
+```graphql
+mutation removePost($id: ID!) {
+  removePost(id: $id) {
+    id
+    body
+    createdAt
+  }
+}
+```
+
+```json
+{
+  "id": "1633205054607"
+}
+```
+
 ### Update A User
 
 ```graphql
