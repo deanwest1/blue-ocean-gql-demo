@@ -110,6 +110,8 @@ Authorization: Bearer <accessToken>
 
 If you're using the GraphiQL UI in the browser, you may wish to use a browser extension like [ModHeader](https://chrome.google.com/webstore/detail/modheader/idgpnmonknjnojddfkpgkljpfnnfcklj) to make it easy to modify the `Authorization` header.
 
+If you want to change users, you need to login as another user and change the `Authorization` token again.
+
 ### Create A Post
 
 ```graphql
