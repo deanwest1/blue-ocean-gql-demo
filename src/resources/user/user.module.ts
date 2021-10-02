@@ -1,4 +1,4 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { UserModelService } from './user.model.service';
 import { UserResolver } from './user.resolver';
 import { PostModule } from '../post/post.module';
